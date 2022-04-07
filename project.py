@@ -80,7 +80,24 @@ def last_minute_submissions(grades):
     8
     """
     
-    ...
+    lab_max_lst = []
+    lab_lateness_lst = []
+    lab_lst = []
+    lab_df = grades.filter(regex='lab', axis=1)
+    for col in lab_df.columns:
+        if "Max Points" in col:
+            lab_max_lst.append(col)
+        elif 'Lateness' in col:
+            lab_lateness_lst.append(col)
+        else:
+            lab_lst.append(col)
+    max_lab_points = lab_df[lab_max_lst].sum(axis=1)
+    raw_lab_points = lab_df[lab_lst].sum(axis=1)
+    lab_lateness_df = lab_df[lab_lateness_lst]
+    lab_lateness_df = lab_lateness_df.replace(':','', regex=True)
+    lab_lateness_df[x] = lab_lateness_df[lab_lateness_lst].apply(pd.to_numeric,errors='coerce')
+    lab_lateness_ser = lab_lateness_df[lab_lateness_lst].apply(lambda x: x < 120000).sum()
+    return lab_lateness_ser
 
 
 # ---------------------------------------------------------------------
