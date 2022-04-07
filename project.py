@@ -95,9 +95,9 @@ def last_minute_submissions(grades):
     raw_lab_points = lab_df[lab_lst].sum(axis=1)
     lab_lateness_df = lab_df[lab_lateness_lst]
     lab_lateness_df = lab_lateness_df.replace(':','', regex=True)
-    lab_lateness_df[x] = lab_lateness_df[lab_lateness_lst].apply(pd.to_numeric,errors='coerce')
-    lab_lateness_ser = lab_lateness_df[lab_lateness_lst].apply(lambda x:(x > 0)\\
-                                                               & (x < 120000)).sum()
+    lab_lateness_df.columns = lab_lst
+    lab_lateness_df = lab_lateness_df[lab_lst].apply(pd.to_numeric,errors='coerce')
+    lab_lateness_ser = lab_lateness_df[lab_lst].apply(lambda x: (x > 0) & (x < 120000)).sum()
     return lab_lateness_ser
 
 
