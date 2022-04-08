@@ -146,7 +146,20 @@ def process_labs(grades):
     >>> np.all((0.65 <= out.mean()) & (out.mean() <= 0.90))
     True
     """
-    ...
+    col = col.replace(':', '', regex = True)
+    col = col.apply(pd.to_numeric, errors = 'coerce')
+    for i,val in col.items():
+        if val < 120000:
+            arr = np.append(arr, 1.0)
+        elif val <= 1680000:
+            arr = np.append(arr, 0.9)
+        elif val <= 3360000:
+            arr = np.append(arr, 0.7)
+        else:
+            arr = np.append(arr, 0.4)
+    
+    s = pd.Series(arr)       
+    return s
 
 
 # ---------------------------------------------------------------------
